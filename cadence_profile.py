@@ -1,5 +1,7 @@
+from cmath import exp
 import numpy as np
 import math
+import random
 import matplotlib.pyplot as plt
 
 
@@ -47,7 +49,7 @@ class CadenceProfile:
         return centroid, np.average(dist), np.std(dist)
 
 
-    def verifyCadence(self, timeKeystroke):
+    def verifyCadence(self, timeKeystroke, visualize=False):
         """
         INPUT
             keystroke; numpy array of new keystroke entry
@@ -58,12 +60,16 @@ class CadenceProfile:
         keystroke = self.timeToRatio(timeKeystroke)
         if(keystroke.size  != self.trainData.shape[1]):
             return False
-        error = np.log(np.linalg.norm(keystroke - self.centroid))
+        error = math.log(np.linalg.norm(keystroke - self.centroid))
         threshold = self.distMean + self.sensitivity * self.distStd
         if (error < threshold):
             self.updateData(keystroke)
-            return True
-        return False
+            flag = True
+        else:
+            flag = False
+        if (visualize):
+            self.visualizeCadence(keystroke, flag)
+        return (flag)
 
     def updateData(self, keystroke):
         """
@@ -74,15 +80,26 @@ class CadenceProfile:
         self.trainData = np.vstack([self.trainData, keystroke])
         self.centroid, self.distMean, self.distStd = self.train(self.trainData)
 
-    def visualize(self, keystroke=None):
+    def visualizeCadence(self, keystroke=np.array([0]), flag=False):
         numTrain, numKey = self.trainData.shape
         keyInds = range(0, numKey)
-        errRange = self.sensitivity * self.distStd / math.sqrt(numTrain)
+        errRange = 1 / math.sqrt(numTrain) * math.exp(self.distMean + self.sensitivity * self.distStd)
         loBound = self.centroid - errRange
         hiBound = self.centroid + errRange
         plt.fill_between(keyInds, loBound, hiBound,
                             interpolate=True, color="green", alpha=0.2,
                             label="Target cadence")
+        if (keystroke.any()):
+            if (flag):
+                plt.plot(keyInds, keystroke,
+                            color = "blue",
+                            label = "Observed cadence (ACCEPTED)")
+            else:
+                plt.plot(keyInds, keystroke,
+                            color = "red",
+                            label = "Observed cadence (REJECTED)")
+
+        plt.legend()
         plt.show()
         pass
 
@@ -91,13 +108,12 @@ dat = [[3, 2, 4.5, 6], [2.5, 1, 5.5, 7], [3.5, 3, 4, 5], [3, 2, 6, 6]]
 sensitivity = 1.5
 profile = CadenceProfile(dat, sensitivity)
 
-print(profile.verifyCadence(np.array([1, 2, 3, 4])))
-print(profile.verifyCadence(np.array([3, 2, 5.1, 6])))
-print(profile.verifyCadence(np.array([3, 2, 4, 4])))
-print(profile.verifyCadence(np.array([2, 3, 7, 7])))
-print(profile.verifyCadence(np.array([2, 3, 10, 8])))
-print(profile.verifyCadence(np.array([3, 2, 5, 0, 0])))
+print(profile.verifyCadence(np.array([1, 2, 3, 4]), True))
+print(profile.verifyCadence(np.array([3, 2, 5.1, 6]), True))
+print(profile.verifyCadence(np.array([3, 2, 4, 4]), True))
+print(profile.verifyCadence(np.array([2, 3, 7, 7]), True))
+print(profile.verifyCadence(np.array([2, 3, 10, 8]), True))
+print(profile.verifyCadence(np.array([3, 2, 5, 0, 0]), True))
 
 print(profile.getTrainData())
 print(profile)
-profile.visualize()
