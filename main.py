@@ -14,3 +14,16 @@ if __name__ == '__main__':
     print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+def train(train_data):
+    """
+    INPUT
+        train_data; n-length list of k-length lists,
+            where the ith element of the jth list is the ith keystroke measurement of the jth password entry
+    OUTPUT
+        centroid; the Euclidean centroid of the train_data
+        mean; mean of the log of the Euclidean norms between training data and centroid
+        std; standard deviation of the log of the Euclidean norms between training data and centroid
+    """
+
