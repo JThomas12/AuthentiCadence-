@@ -1,21 +1,24 @@
 from cadence_profile import CadenceProfile 
 
 class UserProfile:
-    def __int__(self, username, password, timeData):
+    def __init__(self):
         """
         INPUT
             username; a string that is the user's username
             password; a string that is the user's password
             timeData; a list of the times between each key stroke for the 5 trainig enteries
         """
-        self.username = username
-        self.password = password.hash()
-        self.cadence_profile = CadenceProfile(timeData)
+        self.password = ""
+        self.cadence_profile = CadenceProfile()
 
-    def getUsername(self):
-        return self.username
+    def setPassword(self, password):
+        self.password = hash(password)
 
-    def verifyPassword(self, password,keyStrokeTime):
+    def hasPassword(self):
+        return self.password != ""
+    
+
+    def verifyPassword(self, password, keyStrokeTime):
         """
         INPUT
             password; the password the user entered
@@ -23,7 +26,8 @@ class UserProfile:
         OUTPUT
             true if the password and cadence match, false otherwise
         """
-        if(self.password != password.hash()):
+        print("verifyPassword: ", keyStrokeTime)
+        if(self.password != hash(password)):
             return False
         return self.cadence_profile.verifyCadence(keyStrokeTime)
 
@@ -33,5 +37,8 @@ class UserProfile:
             password; the new password the user entered
             timeData; a list of the times between each key stroke for the 5 trainig enteries
         """
-        self.password = password.hash()
+        self.password = hash(password)
         self.cadence_profile = CadenceProfile(timeData)
+    
+    def getNumTrials(self):
+        return self.cadence_profile.trainData.shape[0]
