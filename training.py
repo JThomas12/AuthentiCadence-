@@ -1,15 +1,18 @@
-# yo no way we got the whole squad here 🎉
-
 import numpy as np
 
-class UserProfile:
-    def __init__(self, trainData):
+class CadenceProfile:
+    def __init__(self, timeData):
         """
         INPUT
             trainData; numpy array, where the ij element is the jth keystroke element of the ith password entry
         """
+        trainData = np.array([self.timeToRatio(keystroke) for keystroke in timeData])
         self.trainData = trainData
         self.centroid, self.distMean, self.distStd = self.train(trainData)
+    
+    def timeToRatio(self, keyStrokes):
+        firstTime = keyStrokes[0]
+        return (np.array(keyStrokes)[1:] / firstTime)
         
     def __str__(self):
         return str(np.shape(self.trainData))
@@ -40,7 +43,7 @@ class UserProfile:
         return centroid, np.average(dist), np.std(dist)
 
 
-    def verifyCadence(self, keystroke, sensitivity):
+    def verifyCadence(self, timeKeystroke, sensitivity):
         """
         INPUT
             keystroke; numpy array of new keystroke entry
@@ -48,6 +51,7 @@ class UserProfile:
         OUTPUT
             True/False to indicate validity of keystroke
         """
+        keystroke = self.timeToRatio(timeKeystroke)
         if(keystroke.size  != self.trainData.shape[1]):
             return False
         error = np.log(np.linalg.norm(keystroke - self.centroid))
@@ -66,15 +70,15 @@ class UserProfile:
         self.trainData = np.vstack([self.trainData, keystroke])
         self.centroid, self.distMean, self.distStd = self.train(self.trainData)
 
-dat = np.array([[3, 2, 4.5], [2.5, 1, 5.5], [3.5, 3, 4], [3, 2, 6]])
-profile = UserProfile(dat)
+dat = [[3, 2, 4.5, 6], [2.5, 1, 5.5, 7], [3.5, 3, 4, 5], [3, 2, 6, 6]]
+profile = CadenceProfile(dat)
 sensitivity = 1.5
-print(profile.verifyCadence(np.array([1, 2, 3]), sensitivity))
-print(profile.verifyCadence(np.array([3, 2, 5.1]), sensitivity))
-print(profile.verifyCadence(np.array([3, 2, 4]), sensitivity))
-print(profile.verifyCadence(np.array([2, 3, 7]), sensitivity))
-print(profile.verifyCadence(np.array([2, 3, 10]), sensitivity))
-print(profile.verifyCadence(np.array([3, 2, 5, 0]), sensitivity))
+print(profile.verifyCadence(np.array([1, 2, 3, 4]), sensitivity))
+print(profile.verifyCadence(np.array([3, 2, 5.1, 6]), sensitivity))
+print(profile.verifyCadence(np.array([3, 2, 4, 4]), sensitivity))
+print(profile.verifyCadence(np.array([2, 3, 7, 7]), sensitivity))
+print(profile.verifyCadence(np.array([2, 3, 10, 8]), sensitivity))
+print(profile.verifyCadence(np.array([3, 2, 5, 0, 0]), sensitivity))
 
 print(profile.getTrainData())
 print(profile)
