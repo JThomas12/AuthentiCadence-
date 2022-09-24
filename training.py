@@ -1,10 +1,7 @@
 import numpy as np
-import math
-import matplotlib.pyplot as plt
-
 
 class CadenceProfile:
-    def __init__(self, timeData, sensitivity=1.5):
+    def __init__(self, timeData):
         """
         INPUT
             trainData; numpy array, where the ij element is the jth keystroke element of the ith password entry
@@ -12,8 +9,7 @@ class CadenceProfile:
         trainData = np.array([self.timeToRatio(keystroke) for keystroke in timeData])
         self.trainData = trainData
         self.centroid, self.distMean, self.distStd = self.train(trainData)
-        self.sensitivity = sensitivity
-
+    
     def timeToRatio(self, keyStrokes):
         firstTime = keyStrokes[0]
         return (np.array(keyStrokes)[1:] / firstTime)
@@ -47,7 +43,7 @@ class CadenceProfile:
         return centroid, np.average(dist), np.std(dist)
 
 
-    def verifyCadence(self, timeKeystroke):
+    def verifyCadence(self, timeKeystroke, sensitivity):
         """
         INPUT
             keystroke; numpy array of new keystroke entry
@@ -59,7 +55,7 @@ class CadenceProfile:
         if(keystroke.size  != self.trainData.shape[1]):
             return False
         error = np.log(np.linalg.norm(keystroke - self.centroid))
-        threshold = self.distMean + self.sensitivity * self.distStd
+        threshold = self.distMean + sensitivity * self.distStd
         if (error < threshold):
             self.updateData(keystroke)
             return True
@@ -74,30 +70,15 @@ class CadenceProfile:
         self.trainData = np.vstack([self.trainData, keystroke])
         self.centroid, self.distMean, self.distStd = self.train(self.trainData)
 
-    def visualize(self, keystroke=None):
-        numTrain, numKey = self.trainData.shape
-        keyInds = range(0, numKey)
-        errRange = self.sensitivity * self.distStd / math.sqrt(numTrain)
-        loBound = self.centroid - errRange
-        hiBound = self.centroid + errRange
-        plt.fill_between(keyInds, loBound, hiBound,
-                            interpolate=True, color="green", alpha=0.2,
-                            label="Target cadence")
-        plt.show()
-        pass
+# dat = [[3, 2, 4.5, 6], [2.5, 1, 5.5, 7], [3.5, 3, 4, 5], [3, 2, 6, 6]]
+# profile = CadenceProfile(dat)
+# sensitivity = 1.5
+# print(profile.verifyCadence(np.array([1, 2, 3, 4]), sensitivity))
+# print(profile.verifyCadence(np.array([3, 2, 5.1, 6]), sensitivity))
+# print(profile.verifyCadence(np.array([3, 2, 4, 4]), sensitivity))
+# print(profile.verifyCadence(np.array([2, 3, 7, 7]), sensitivity))
+# print(profile.verifyCadence(np.array([2, 3, 10, 8]), sensitivity))
+# print(profile.verifyCadence(np.array([3, 2, 5, 0, 0]), sensitivity))
 
-
-dat = [[3, 2, 4.5, 6], [2.5, 1, 5.5, 7], [3.5, 3, 4, 5], [3, 2, 6, 6]]
-sensitivity = 1.5
-profile = CadenceProfile(dat, sensitivity)
-
-print(profile.verifyCadence(np.array([1, 2, 3, 4])))
-print(profile.verifyCadence(np.array([3, 2, 5.1, 6])))
-print(profile.verifyCadence(np.array([3, 2, 4, 4])))
-print(profile.verifyCadence(np.array([2, 3, 7, 7])))
-print(profile.verifyCadence(np.array([2, 3, 10, 8])))
-print(profile.verifyCadence(np.array([3, 2, 5, 0, 0])))
-
-print(profile.getTrainData())
-print(profile)
-profile.visualize()
+# print(profile.getTrainData())
+# print(profile)
