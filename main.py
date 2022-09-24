@@ -1,7 +1,12 @@
 import training
+import password_reset
+import sample_website
+import pickle
 
 
-print(training.train(1))
+
+
+training_tup = training.train(password_reset.getPasswords())
 
 
 

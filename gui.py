@@ -39,4 +39,6 @@ class TestEntry:
         self.prev_str = cur_str
         self.prev_change_time = cur_change_time
 
+    
+
 TestEntry()
