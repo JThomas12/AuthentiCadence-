@@ -98,7 +98,10 @@ class CadenceProfile:
                 plt.plot(keyInds, keystroke,
                             color = "red",
                             label = "Observed cadence (REJECTED)")
-
+        plt.xticks(range(numKey))
+        plt.xlabel("Keystroke #")
+        plt.ylabel("Cadence ratio")
+        plt.title("Cadence authentication")
         plt.legend()
         plt.show()
         pass
