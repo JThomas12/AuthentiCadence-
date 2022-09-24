@@ -1,9 +1,7 @@
 from cmath import exp
 import numpy as np
 import math
-import random
 import matplotlib.pyplot as plt
-
 
 class CadenceProfile:
     def __init__(self, timeData, sensitivity=1.5):
@@ -104,7 +102,6 @@ class CadenceProfile:
         plt.title("Cadence authentication")
         plt.legend()
         plt.show()
-        pass
 
 
 dat = [[3, 2, 4.5, 6], [2.5, 1, 5.5, 7], [3.5, 3, 4, 5], [3, 2, 6, 6]]
