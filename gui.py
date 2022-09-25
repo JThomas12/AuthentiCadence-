@@ -81,7 +81,7 @@ class TestAuthentiCadence:
                 print("Correct password added to user!")
             else:
                 # If password incorrect, do nothing
-                messagebox.showerror("Incorrect password!")
+                messagebox.showerror("Incorrect password!", "Please enter the correct password.")
         else:
             # Set password of user to current pass entry
             self.user.setPassword(self.train_pass_entry.get())
@@ -117,14 +117,17 @@ class TestAuthentiCadence:
         self.prev_test_change_time = cur_change_time
             
     def testPass(self):
-        isVerified = self.user.verifyPassword(self.test_pass_entry.get(), self.cur_test_keystrokes)
-
-        if isVerified:
-            print("User successfully logged in")
+        if hash(self.train_pass_entry.get()) != self.user.password:
+            # If password incorrect, do nothing
+            messagebox.showerror("Incorrect password!", "Please enter the correct password.")
         else:
-            print("User failed to authenticate")
-        
-        self.user.cadence_profile.visualizeCadence(self.cur_test_keystrokes, isVerified)
+            isVerified = self.user.verifyPassword(self.test_pass_entry.get(), self.cur_test_keystrokes)
+            if isVerified:
+                print("User successfully logged in")
+            else:
+                print("User failed to authenticate")
+            self.user.cadence_profile.visualizeCadence(self.cur_test_keystrokes, isVerified)
+            
         self.test_pass_entry.set("")
 
 TestAuthentiCadence()
