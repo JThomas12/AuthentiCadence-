@@ -53,8 +53,8 @@ class TestAuthentiCadence:
         self.train_pass_box = customtkinter.CTkEntry(self.window, textvariable=self.train_pass_entry)
         self.train_pass_box.pack()
 
-        train_pass_button = customtkinter.CTkButton(self.window, text="Create/Train Password", command=self.trainPass)
-        train_pass_button.pack(pady=(5, 0))
+        self.train_pass_button = customtkinter.CTkButton(self.window, text="Create Password", command=self.trainPass)
+        self.train_pass_button.pack(pady=(5, 0))
 
         # Test Model ====================================================
         customtkinter.CTkLabel(text="Password Testing:", text_font=("Calibri Bold", 16)).pack(pady=(10, 0))
@@ -107,6 +107,7 @@ class TestAuthentiCadence:
                 # If password incorrect, do nothing
                 messagebox.showerror("Incorrect password!", "Please enter the correct password.")
         else:
+            self.train_pass_button.configure(text="Train Password")
             # Set password of user to current pass entry
             self.user.setPassword(self.train_pass_entry.get())
             # Add current time data to user's time datset

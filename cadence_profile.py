@@ -4,7 +4,7 @@ import math
 import matplotlib.pyplot as plt
 
 class CadenceProfile:
-    def __init__(self, sensitivity=1):
+    def __init__(self, sensitivity=1.25):
         '''
         INPUT
             sensitivity; threshold number of standard deviations away from expected cadence where invalid cadences are cut off
