@@ -8,7 +8,7 @@ youtube link
 We address human error in cybersecurity by introducing AuthentiCadence, a biometric dimension to multi-factor authentication. AuthentiCadence learns the timing and rhythm of the keystrokes in the user’s password entry, defined as the user’s cadence. A binary classifier then identifies valid password entries based on this cadence. Importantly, even if a hacker knows the password, the device remains secured by cadence authentication.
 
 ## How it Works
-![Model flow chart](https://github.com/JThomas12/AuthentiCadence-.git/blob/main/AuthentiCadence_Flowchart.png?raw=true)
+![Model flow chart](https://raw.githubusercontent.com/JThomas12/AuthentiCadence-/main/AuthentiCadence_Flowchart.png)
 We start with an initial set of valid cadences as training data. The cadences are encoded as vectors, where vector components represent normalized time elapsed between keystrokes. The distribution of cadence vectors is used to determine the maximum tolerable deviation from an expected cadence. This distribution is used to train a binary classifier to categorize valid cadences. When somebody attempts to login, their password cadence is input into the classifier. If the new password is found to match the original user’s cadence, it is admitted. Future valid password entries are added to the training data to retrain the classifier to account for drift in cadence patterns over time.
 
 ## Impact
