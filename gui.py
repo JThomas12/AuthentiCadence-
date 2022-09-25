@@ -70,7 +70,7 @@ class TestAuthentiCadence:
         self.prev_train_str = cur_str
         self.prev_train_change_time = cur_change_time
 
-    def trainPass(self):
+    def trainPass(self):    
         print(self.cur_train_keystrokes)
         # If the user has a stored password
         if self.user.hasPassword():
