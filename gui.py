@@ -94,9 +94,10 @@ class TestAuthentiCadence:
         self.num_trials += 1
         self.num_trials_label.config(text = str(self.num_trials) + " Trials")
         
-        # Enable testing functionality
-        self.test_pass_box.config(state="normal")
-        self.test_pass_button.config(state="normal")
+        # Enable testing functionality if at least two trials
+        if self.num_trials >= 2:
+            self.test_pass_box.config(state="normal")
+            self.test_pass_button.config(state="normal")
 
         print(self.user.cadence_profile.getTrainData())
 
@@ -117,7 +118,7 @@ class TestAuthentiCadence:
         self.prev_test_change_time = cur_change_time
             
     def testPass(self):
-        if hash(self.train_pass_entry.get()) != self.user.password:
+        if hash(self.test_pass_entry.get()) != self.user.password:
             # If password incorrect, do nothing
             messagebox.showerror("Incorrect password!", "Please enter the correct password.")
         else:
