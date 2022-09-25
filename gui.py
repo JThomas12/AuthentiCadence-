@@ -124,6 +124,7 @@ class TestAuthentiCadence:
         else:
             print("User failed to authenticate")
         
-        self.user.cadence_profile.visualizeCadence(self.cur_test_keystrokes)
+        self.user.cadence_profile.visualizeCadence(self.cur_test_keystrokes, isVerified)
+        self.test_pass_entry.set("")
 
 TestAuthentiCadence()

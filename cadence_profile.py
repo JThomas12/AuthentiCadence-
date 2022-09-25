@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 class CadenceProfile:
-    def __init__(self, sensitivity=1.5):
+    def __init__(self, sensitivity=1):
         """
         INPUT
             trainData; numpy array, where the ij element is the jth keystroke element of the ith password entry
