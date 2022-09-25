@@ -13,7 +13,8 @@ class TestAuthentiCadence:
 
         self.cur_train_keystrokes = []
         self.prev_train_str = ""
-        self.prev_train_change_time = time.perf_counter()
+        self.prev_train_change_time = None
+        self.prev_test_change_time = None
 
         # Create password and train model =================================================
 
@@ -38,7 +39,6 @@ class TestAuthentiCadence:
 
         self.cur_test_keystrokes = []
         self.prev_test_str = ""
-        self.prev_test_change_time = time.perf_counter()
 
         test_pass_label = tk.Label(self.window, text = "Test your trained password below:")
         test_pass_label.pack(padx=50, pady=5)
@@ -58,7 +58,7 @@ class TestAuthentiCadence:
         cur_str = sv.get()
         cur_change_time = time.perf_counter()
 
-        if len(cur_str) == 0:
+        if len(self.prev_train_str) == 0 or len(cur_str) == 0:
             self.cur_train_keystrokes = []
         else:
             if len(cur_str) > len(self.prev_train_str):
@@ -66,7 +66,7 @@ class TestAuthentiCadence:
             else:
                 self.cur_train_keystrokes.pop()
 
-        #print(self.cur_train_keystrokes)
+        print(self.cur_train_keystrokes)
         self.prev_train_str = cur_str
         self.prev_train_change_time = cur_change_time
 
@@ -104,7 +104,7 @@ class TestAuthentiCadence:
         cur_str = sv.get()
         cur_change_time = time.perf_counter()
 
-        if len(cur_str) == 0:
+        if len(self.prev_test_str) == 0 or len(cur_str) == 0:
             self.cur_test_keystrokes = []
         else:
             if len(cur_str) > len(self.prev_test_str):
