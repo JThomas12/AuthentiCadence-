@@ -1,15 +1,14 @@
 from cmath import exp
 import numpy as np
 import math
-import random
 import matplotlib.pyplot as plt
-
 
 class CadenceProfile:
     def __init__(self, sensitivity=1):
         """
         INPUT
             trainData; numpy array, where the ij element is the jth keystroke element of the ith password entry
+            sensitivity; threshold number of standard deviations away from expected cadence where invalid cadences are cut off
         """
         self.trainData = np.array([])
         self.centroid = np.array([])
@@ -23,9 +22,7 @@ class CadenceProfile:
         # self.sensitivity = sensitivity
 
     def timeToRatio(self, timeKeystroke):
-        print("timeToRatio: ",timeKeystroke )
-        firstTime = timeKeystroke[0]
-        return (np.array(timeKeystroke)[1:] / firstTime)
+        return np.array(timeKeystroke) / sum(timeKeystroke)
         
     def __str__(self):
         return str(np.shape(self.trainData))
@@ -119,7 +116,6 @@ class CadenceProfile:
         plt.title("Cadence authentication")
         plt.legend()
         plt.show()
-        pass
 
 # user = CadenceProfile()
 # user.updateData([1, 2, 3, 4])
