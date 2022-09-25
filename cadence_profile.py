@@ -8,6 +8,7 @@ class CadenceProfile:
         """
         INPUT
             trainData; numpy array, where the ij element is the jth keystroke element of the ith password entry
+            sensitivity; threshold number of standard deviations away from expected cadence where invalid cadences are cut off
         """
         self.trainData = np.array([])
         self.centroid = np.array([])
@@ -21,9 +22,7 @@ class CadenceProfile:
         # self.sensitivity = sensitivity
 
     def timeToRatio(self, timeKeystroke):
-        print("timeToRatio: ",timeKeystroke )
-        firstTime = timeKeystroke[0]
-        return (np.array(timeKeystroke)[1:] / firstTime)
+        return np.array(timeKeystroke) / sum(timeKeystroke)
         
     def __str__(self):
         return str(np.shape(self.trainData))
