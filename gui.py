@@ -19,7 +19,8 @@ class TestAuthentiCadence:
 
         self.user = UserProfile()
 
-        customtkinter.CTkLabel(text="AuthentiCadence", text_font=("Calibri",25)).pack(pady=10)
+        customtkinter.CTkLabel(text="AuthentiCadence:", text_font=("Calibri Bold",25)).pack(pady=(10, 0))
+        customtkinter.CTkLabel(text="On-Beat Security", text_font=("Calibri",18)).pack()
         
         customtkinter.CTkLabel(text="Options:", text_font=("Calibri Bold", 16)).pack(pady=10)
         customtkinter.CTkButton(self.window, text="Refresh Window", command=self.refresh).pack()
